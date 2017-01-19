@@ -1,4 +1,4 @@
-#function do_testing ( )
+function do_testing ( )
 
 %clear all;
 
