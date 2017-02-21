@@ -1,0 +1,82 @@
+function aligned_shape = cascaded_regress (  BFMmodel, keypoints,BoundIdxSet,...
+    LearnedCascadedModel, img, init_para, init_trans, options,idata,cx,cy  )
+
+
+%% parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+n_cascades = LearnedCascadedModel{1}.n_cascades;
+desc_size  = LearnedCascadedModel{1}.descSize;
+desc_bins  = LearnedCascadedModel{1}.descBins;
+factor     = options.scaleFactor;
+
+
+%% iterations of cascades %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for ic = 1 : n_cascades
+    
+    current_scale = cascade_img_scale(factor, ic, n_cascades);
+    
+    options.current_cascade = ic;
+    
+    cropIm_scale = imresize(img,current_scale);
+    init_para   = init_para * current_scale;
+    
+    Recon_shape = Reconstruct_face(BFMmodel, init_para, init_trans);
+    all_key = keypoints;
+
+
+    if options.useBoundary ==1
+        if ic == 1          
+        bv = get_boundary_vertex(Recon_shape, BFMmodel.tl, BoundIdxSet);
+        end
+        all_key = [keypoints bv];
+    end
+
+%     imsize = size(cropIm_scale);
+    init_projection = CalKeyProj(Recon_shape, init_trans, all_key, cx,cy);
+
+%     init_projection = CalKeyProj(BFMmodel,init_shape,keypoints);
+    if 1
+        figure; imshow(cropIm_scale); hold on;
+        plot(init_projection(:,1), init_projection(:,2),'g.');
+        title(['Keypoints:iter' num2str(ic)]);
+        
+        hold off;
+        saveas(gcf,[options.ResultDataPath num2str(idata) 'iter' num2str(ic) 'proj.jpg']);
+    end
+%     beta  = zeros(msz.n_tex_dim, 1); % use mean texture for rendering
+%         tex    = coef2object( beta,  BFMmodel.texMU,   BFMmodel.texPC,  BFMmodel.texEV );       
+%         %Recon_shape = coef2object(estPara', BFMmodel.shapeMU, BFMmodel.shapePC, BFMmodel.shapeEV);
+%         
+%         rp     = defrp;
+%         rp.phi = 0.5;
+%         rp.dir_light.dir = [0;1;1];
+%         rp.dir_light.intens = 0.6*ones(3,1);
+%         figure; 
+%         display_face(Recon_shape, tex, BFMmodel.tl, rp);
+%         title('3D face:estimated');
+        %saveas(gcf,[options.ResultDataPath num2str(idata) 'iter' num2str(ic) 'estimate3D.jpg']);
+    desc = local_descriptors(cropIm_scale, ...
+    init_projection, desc_size, desc_bins, options);%extract features
+    if options.useBoundary ==1
+                desc(end-17:end,:) = desc(end-17:end,:)*0.5;%assign weight 0.5 to face boundary
+    end
+    desc(1:10,:) = desc(1:10,:)*0;% do not use eyebrows
+%     desc(end-17:end,:) = desc(end-17:end,:)*0.5;
+%     desc(1:10,:) = desc(1:10,:)*0;
+    
+    del_para = regress( desc(:)', LearnedCascadedModel{ic}.R );% regressing
+    
+%   origin_del = bsxfun(@times, vec_2_shape(del_shape'), bbox(3:4));
+    
+    
+    tmp_para = init_para - del_para';% estimate the new shape    
+    tmp_para = tmp_para / current_scale;
+    
+    init_para    = tmp_para;
+    
+    aligned_shape = tmp_para;
+    
+end
+
+
+end
+
