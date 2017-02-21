@@ -20,8 +20,8 @@ TrainingData = load_data( imgTrainDir, ptsTrainDir, options );
 %% load testing data
 imgDir = options.testingImageDataPath;
 ptsDir = options.testingTruthDataPath;
-Data  = load_real_data(imgDir, ptsDir, options );
-%Data = load_all_data2(imgDir, ptsDir, options);
+%Data  = load_real_data(imgDir, ptsDir, options );
+Data = load_all_data2(imgDir, ptsDir, options);
 nData = length(Data);
 %nData = 20;
 
@@ -42,7 +42,7 @@ for idata = 1 : nData
     
     %% estimate parameters based on the learning regressor
     estPara = face_alignment( BFMmodel, innerKeypointIndices, BoundIdxSet, ...
-        LearnedCascadedModel, TrainingData, img, trueTrans, options, idata,msz,cx,cy );
+        LearnedCascadedModel, TrainingData, img, trueTrans, options, idata,cx,cy );
     %% render esimated 3d face
     beta  = zeros(msz.n_tex_dim, 1); % use mean texture for rendering
     tex    = coef2object( beta,  BFMmodel.texMU,   BFMmodel.texPC,  BFMmodel.texEV );       
