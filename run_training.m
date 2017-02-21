@@ -49,7 +49,7 @@ for icascade = 1 : n_cascades
         LearnedCascadedModel{icascade}.R = R;
         
     end   
-    save('Result/Trained_RMS.mat' , 'rms');
+    save('../Result/Trained_RMS.mat' , 'rms');
 end
 
 %save('Result/Trained_RMS.mat' , 'rms');

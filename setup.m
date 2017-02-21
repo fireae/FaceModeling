@@ -31,7 +31,7 @@ if ~isdeployed
     addpath([cwd '/common/BFM/']);
     %face detection algorithm from face++
     addpath([cwd '/faceDetect/']);
-    addpath([cwd '/model/']);
+    addpath('../model/');
     
     %libs
     addpath([cwd '/lib/liblinear-2.1/matlab']);
@@ -46,14 +46,14 @@ vl_setup();
 
 options.datasetName = 'BFM';  %% 'lfpw', 'helen' or 'w300'
 
-options.trainingImageDataPath = './data/BFM/traincrop/';
-options.trainingTruthDataPath = './data/BFM/traincrop/';
+options.trainingImageDataPath = '../data/BFM/testcrop/';
+options.trainingTruthDataPath = '../data/BFM/testcrop/';
                                    
-options.testingImageDataPath  = './data/real/crop/';
-options.testingTruthDataPath  = './data/real/crop/';
+options.testingImageDataPath  = '../data/real/crop/';
+options.testingTruthDataPath  = '../data/real/crop/';
 
-options.ResultDataPath = './Result/imgs/';
-options.ResultFigurePath = './Result/cum/';
+options.ResultDataPath = '../Result/imgs/';
+options.ResultFigurePath = '../Result/cum/';
 options.learningShape     = 0;
 options.learningVariation = 0;
 options.useBoundary = 0;
@@ -64,7 +64,7 @@ options.flipFlag          = 0;   % the flag of flipping
 %%  @other folders  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 options.tempPath      = 'temp';
-options.modelPath     = 'model';
+options.modelPath     = '../model';
 
 %%  @cascade regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
