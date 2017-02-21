@@ -46,8 +46,8 @@ vl_setup();
 
 options.datasetName = 'BFM';  %% 'lfpw', 'helen' or 'w300'
 
-options.trainingImageDataPath = '../data/BFM/testcrop/';
-options.trainingTruthDataPath = '../data/BFM/testcrop/';
+options.trainingImageDataPath = '../data/BFM/traincrop/';
+options.trainingTruthDataPath = '../data/BFM/traincrop/';
                                    
 options.testingImageDataPath  = '../data/real/crop/';
 options.testingTruthDataPath  = '../data/real/crop/';
