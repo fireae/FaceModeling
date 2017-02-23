@@ -11,6 +11,10 @@ featdim   = size(X,2);
 shapedim  = size(Y,2);
 
 param = sprintf('-s 12 -p 0 -c %f -q', lambda);
+%-s:12-- L2-regularized L2-loss support vector regression (dual)
+%-p:0-- epsilon : epsilon-SVR loss function parameter-epsilon（default0.1）
+%-c
+%-q: quiet mode:no output information
 %param = sprintf('-s 12 -p 0 -c 0.3 -q');
 R_tmp = zeros( featdim, shapedim );
 tic;
