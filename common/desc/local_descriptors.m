@@ -50,9 +50,13 @@ elseif strcmp(featType,'vlsift')
             im = single(img);
         end
         scale = dsize/4;
+        figure;
+        imshow(img);
         for ipts = 1:size(xy,1)
             frame = [xy(ipts,:)';scale;0];
             [key,sift] = vl_sift(im,'frames',frame);
+%             h =  vl_plotsiftdescriptor(sift,frame);
+%             set(h,'color','g') ;
             desc(ipts,:) = sift';
         end
 %         frame = [xy';scale*ones(1,size(xy,1));zeros(1,size(xy,1))];

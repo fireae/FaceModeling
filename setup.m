@@ -46,11 +46,11 @@ vl_setup();
 
 options.datasetName = 'BFM';  %% 'lfpw', 'helen' or 'w300'
 
-options.trainingImageDataPath = '../data/BFM/traincrop/';
-options.trainingTruthDataPath = '../data/BFM/traincrop/';
+options.trainingImageDataPath = '../data/BFM/testcrop/';
+options.trainingTruthDataPath = '../data/BFM/testcrop/';
                                    
-options.testingImageDataPath  = '../data/real/crop/';
-options.testingTruthDataPath  = '../data/real/crop/';
+options.testingImageDataPath  = '../data/BFM/testcrop/';
+options.testingTruthDataPath  = '../data/BFM/testcrop/';
 
 options.ResultDataPath = '../Result/imgs/';
 options.ResultFigurePath = '../Result/cum/';
@@ -88,7 +88,7 @@ options.descType  = 'hog'; % raw, hog (124 dims), dense_sift (128 dims)
 options.descRawWin = 10;
 options.descSize  = [20 20 20 20 20 20 20];
 %options.descScale = [0.16 0.16 0.16 0.16 0.16 0.16 0.16 0.16 0.16 0.16];
-options.descScale = 0.16 * ones(1,options.n_cascades);
+options.descScale = 0.08 * ones(1,options.n_cascades);
 options.descBins  =  4;
 
             

@@ -31,6 +31,7 @@ for iimgs = 1 : nimgs
     
     %% load images
     img = im2uint8(imread([dbpath_img imlist(iimgs).name]));
+    img = imscale(img,0.2);
     Data{iimgs}.width_orig  = size(img,2);
     Data{iimgs}.height_orig = size(img,1);
     

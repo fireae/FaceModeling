@@ -54,9 +54,9 @@ for ic = 1 : n_cascades
 %         display_face(Recon_shape, tex, BFMmodel.tl, rp);
 %         title('3D face:estimated');
         %saveas(gcf,[options.ResultDataPath num2str(idata) 'iter' num2str(ic) 'estimate3D.jpg']);
-    desc = local_descriptors(cropIm_scale, ...
-    init_projection, desc_size, desc_bins, options);%extract features
-    if options.useBoundary ==1
+    desc = double(local_descriptors(cropIm_scale, ...
+    init_projection, desc_size, desc_bins, options));%extract features
+    if options.useBoundary == 1
                 desc(end-17:end,:) = desc(end-17:end,:)*0.5;%assign weight 0.5 to face boundary
     end
     desc(1:10,:) = desc(1:10,:)*0;% do not use eyebrows
