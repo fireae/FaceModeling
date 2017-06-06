@@ -8,9 +8,9 @@ mex -O features.cc
 % If you are using a Windows machine, please use 3. 
 
 % 1) multithreaded convolution using blas
-% mex -O fconvblas.cc -lmwblas -o fconv
+mex -O fconvblas.cc -lmwblas -output fconv
 % 2) mulththreaded convolution without blas
-%mex -O fconvMT.cc -o fconv
+%mex -O fconvMT.cc -output fconv
 % 3) basic convolution, very compatible
-mex -O fconv.cc
+%mex -O fconv.cc
 

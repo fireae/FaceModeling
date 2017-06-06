@@ -33,7 +33,7 @@ if ~isdeployed
     addpath([cwd '/common/BFM/']);
     %face detection algorithm from face++
     addpath([cwd '/FaceDetect/']);
-    addpath([cwd '/model/']);
+    addpath([cwd '/../model/']);
     
     %libs
     addpath([cwd '/lib/liblinear-2.1/matlab']);
@@ -54,8 +54,8 @@ options.trainingTruthDataPath = '../BosphorusDB/';
 options.testingImageDataPath  = '../BosphorusDB/';
 options.testingTruthDataPath  = '../BosphorusDB/';
 
-options.ResultPath = './Result/exp17/set5/';
-options.ResultFigurePath = './Result/exp17/set5/';
+options.ResultPath = '../Result/exp17/set5/';
+options.ResultFigurePath = '../Result/exp17/set5/';
 options.learningShape     = 0;
 options.learningVariation = 0;
 options.useBoundary = 1;
