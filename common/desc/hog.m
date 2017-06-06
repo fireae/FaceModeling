@@ -11,18 +11,24 @@ rect =  [pos(1) - (lmsize-1)/2, ...
 
 
 cropim = imcrop(im,rect);
+
+if isempty(cropim)
+	desc = zeros(1,2*2*31);
+    return 
+end
+
 if 0
    figure; imshow(cropim);hold on;
    pause;
 end
 %disp([size(cropim) lmsize]);
-scalesize = 64;
+scalesize = 40;%64;
 %scale image patch to [64 64]
 if size(cropim,1) ~= scalesize || size(cropim,2) ~=scalesize
      cropim = imresize(cropim,[scalesize scalesize]);
 end
 
-cellSize = 32 ;
+cellSize = 20;%32 ;
 %tmp = vl_hog(single(cropim), cellSize, 'verbose');
 tmp = vl_hog(single(cropim), cellSize);
 

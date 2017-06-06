@@ -27,5 +27,5 @@ aligned_shape = reshape(aligned_shape,[ 3 numel(ground_truth)/3 ])';
 
 %error = mean(sqrt(sum((normalized_gt - normalized_as).^2,2)));
 error = mean(sqrt(sum((ground_truth - aligned_shape).^2,2)));
-
+disp(['vdist = ' num2str(error)]);
 end

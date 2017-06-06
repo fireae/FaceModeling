@@ -3,9 +3,9 @@ function display_face (shp, tex, tl, rp)
 	shp = reshape(shp, [ 3 prod(size(shp))/3 ])'; 
 	tex = reshape(tex, [ 3 prod(size(tex))/3 ])'; 
     %% Only show facial part
-     load nonface3.mat
-     tex(idx,:) = nan;
-     shp(idx,:) = nan;
+%      load nonface3.mat
+%      tex(idx,:) = nan;
+%      shp(idx,:) = nan;
     %% only show facial part
 	tex = min(tex, 255);
     
@@ -50,7 +50,7 @@ function display_face (shp, tex, tl, rp)
 		'Units', 'pixels', ...
 		'GridLineStyle', 'none', ...
         'Position', [ 0 0 fig_pos(3) fig_pos(4) ], ...
-		'Visible', 'on', 'box', 'on', ...
+		'Visible', 'off', 'box', 'off', ...
 		'Projection', 'perspective', ...
         'CameraPosition',[0 0 0]...
         ); 
@@ -58,7 +58,7 @@ function display_face (shp, tex, tl, rp)
 % 		
 		
 	
-	set(gcf, 'Color', [ 0 0 0 ]);
+	set(gcf, 'Color', [ 1 1 1]);
     out = get(gca,'CameraPosition');
     out = get(gca,'CameraTarget');
     set(gca,'CameraTarget',[0 0 0]);

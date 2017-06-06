@@ -29,6 +29,6 @@ rms = s/n_pts;
 % 
 % rms = rms/inter_ocular_distance;
 
-disp(['rms = ' num2str(rms)]);
+%disp(['rms = ' num2str(rms)]);
 
 end

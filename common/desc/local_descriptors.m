@@ -14,9 +14,9 @@ if strcmp(featType,'raw')
     else
         im = im2double(uint8(img));
     end
-    npts = size(xy,1);
+    npts = size(xy,2);
     for ipts = 1 : npts
-        desc(ipts,:) = raw(im,xy(ipts,:), options.descRawWin*options.descRawWin);
+        desc(ipts,:) = raw(im,xy(:,ipts), options.descRawWin*options.descRawWin);
     end
 
 elseif strcmp(featType,'xx_sift')
@@ -49,14 +49,10 @@ elseif strcmp(featType,'vlsift')
         else   
             im = single(img);
         end
-        scale = dsize/4;
-        figure;
-        imshow(img);
+        scale = 2;%dsize/4;
         for ipts = 1:size(xy,1)
             frame = [xy(ipts,:)';scale;0];
             [key,sift] = vl_sift(im,'frames',frame);
-%             h =  vl_plotsiftdescriptor(sift,frame);
-%             set(h,'color','g') ;
             desc(ipts,:) = sift';
         end
 %         frame = [xy';scale*ones(1,size(xy,1));zeros(1,size(xy,1))];
@@ -72,11 +68,14 @@ elseif strcmp(featType,'hog')
         im = im2double(uint8(img));
     end
     
-    npts = size(xy,1);
-    
+    npts = size(xy,2);
+    desc = zeros(npts, 2 * 2 * 31);
     for ipts = 1 : npts
         %disp(ipts);
-        desc(ipts,:) = hog(im,xy(ipts,:),dsize);
+        x = xy(1,ipts); y = xy(2,ipts);
+        %if x < size(img,1) && x > 0 && y < size(img,2) && y > 0
+        desc(ipts,:) = hog(im,xy(:,ipts),dsize)';
+        %end
     end
     
 end
