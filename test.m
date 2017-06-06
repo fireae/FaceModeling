@@ -1,5 +1,5 @@
 %close all;
-
+%git test
 oldlist = dir(['.\data\BFM\trainfrontal\' '*.jpg']);
 for i = 1:length(oldlist)
     im = imread(['.\data\BFM\traincrop\im' num2str(i) '.jpg']);
