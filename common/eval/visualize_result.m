@@ -91,7 +91,7 @@ function [projdist, rmseParaCenter, rmseParaWhole,rmseCenter,rmseWhole,euDist]..
     colorbar;
     cmap = colormap;
     maxerror = 10; % hottest err: 10 mm
-    err = min(error(idxCenter)/maxerror,1);
+    err = min(error/maxerror,1);
     coloridx=max(uint8(64*err),1);
     colors_N_3 = 200*repmat([1 1 1],[size(estShape,2),1]);
     colors_N_3(idxCenter,:) = 255*cmap(coloridx,:);

@@ -54,8 +54,8 @@ options.trainingTruthDataPath = '../BosphorusDB/';
 options.testingImageDataPath  = '../BosphorusDB/';
 options.testingTruthDataPath  = '../BosphorusDB/';
 
-options.ResultPath = '../Result/exp17/set5/';
-options.ResultFigurePath = '../Result/exp17/set5/';
+options.ResultPath = '../Result/exp17/set4/';
+options.ResultFigurePath = '../Result/exp17/set4/';
 options.learningShape     = 0;
 options.learningVariation = 0;
 options.useBoundary = 1;

@@ -22,12 +22,12 @@ imgDir = options.trainingImageDataPath;
 %% loading data 
 disp('Loading training data...');
 trainData = load_bd_data([imgDir 'bs000/'], options);
-parfor id = 1:40
+parfor id = 1:29
     path = [imgDir 'bs' sprintf('%03d',id) '/'];
     tmp = load_bd_data(path, options);
     trainData = [trainData;tmp];
 end
-parfor id = 46:104
+parfor id = 35:104
     path = [imgDir 'bs' sprintf('%03d',id) '/'];
     tmp = load_bd_data(path, options);
     trainData = [trainData;tmp];
@@ -118,7 +118,7 @@ toc;
 % clear;
 %%%%%%%%%%%%%%%%%%%%%%%%% test
 clc;close all;
-%% loading the setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% loading the setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 options = setup( );
 % loading FWM model
 if (exist('faces','var')==0) 
@@ -134,8 +134,8 @@ load([options.ResultPath 'LearnedCascadedModel.mat']);
 LearnedCascadedModel = LearnedCascadedModel;
 %% load testing data
 imgDir = options.testingImageDataPath;
-Data = load_all_bd_data([imgDir 'bs041/'],options);
-parfor id = 42:45
+Data = load_all_bd_data([imgDir 'bs030/'],options);
+parfor id = 30:34
     path = [imgDir 'bs' sprintf('%03d',id) '/'];
     tmp = load_all_bd_data(path, options);
     Data = [Data;tmp];
