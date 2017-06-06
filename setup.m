@@ -1,6 +1,6 @@
 function options = setup( )
 %%  @paths    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+options.debugMode = 0;
 cwd=cd;
 cwd(cwd=='\')='/';
 
@@ -10,6 +10,8 @@ options.slash      = '/'; %% For linux
 %% @library paths %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if ~isdeployed
     
+    %add the tensor toolbox to the MATLAB path
+    addpath([cwd '/lib/tensor_toolbox_2.6/tensor_toolbox']); 
     %training
     addpath([cwd '/source/train/']);
     
@@ -30,8 +32,8 @@ if ~isdeployed
     addpath([cwd '/common/eval/']);
     addpath([cwd '/common/BFM/']);
     %face detection algorithm from face++
-    addpath([cwd '/faceDetect/']);
-    addpath('../model/');
+    addpath([cwd '/FaceDetect/']);
+    addpath([cwd '/model/']);
     
     %libs
     addpath([cwd '/lib/liblinear-2.1/matlab']);
@@ -46,31 +48,31 @@ vl_setup();
 
 options.datasetName = 'BFM';  %% 'lfpw', 'helen' or 'w300'
 
-options.trainingImageDataPath = '../data/BFM/testcrop/';
-options.trainingTruthDataPath = '../data/BFM/testcrop/';
+options.trainingImageDataPath = '../BosphorusDB/';
+options.trainingTruthDataPath = '../BosphorusDB/';
                                    
-options.testingImageDataPath  = '../data/BFM/testcrop/';
-options.testingTruthDataPath  = '../data/BFM/testcrop/';
+options.testingImageDataPath  = '../BosphorusDB/';
+options.testingTruthDataPath  = '../BosphorusDB/';
 
-options.ResultDataPath = '../Result/imgs/';
-options.ResultFigurePath = '../Result/cum/';
+options.ResultPath = './Result/exp17/set5/';
+options.ResultFigurePath = './Result/exp17/set5/';
 options.learningShape     = 0;
 options.learningVariation = 0;
-options.useBoundary = 0;
-
+options.useBoundary = 1;
+options.faceDetected = 1;
 
 options.flipFlag          = 0;   % the flag of flipping
 
 %%  @other folders  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 options.tempPath      = 'temp';
-options.modelPath     = '../model';
+options.modelPath     = 'model';
 
 %%  @cascade regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-options.n_cascades     = 10;         % the number of cascades
+options.n_cascades     = 15;         % the number of cascades
 
-options.n_init_randoms = 4;         % the number of initial randoms
+options.n_init_randoms = 1;         % the number of initial randoms
 
 options.n_init_randoms_test = 1;    % the number of initial randoms
             
@@ -81,14 +83,14 @@ options.scaleFactor = 1;
 %options.lambda     = [1 2 3 4 5 6 7] * 100;
 %options.lambda      = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1] * 0.005;
 options.lambda      = 0.005 * ones(1, options.n_cascades);
-options.paraSize = 100;
+options.paraSize = 50+25;
 %%  @feature configuration  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 options.descType  = 'hog'; % raw, hog (124 dims), dense_sift (128 dims)
 options.descRawWin = 10;
 options.descSize  = [20 20 20 20 20 20 20];
 %options.descScale = [0.16 0.16 0.16 0.16 0.16 0.16 0.16 0.16 0.16 0.16];
-options.descScale = 0.08 * ones(1,options.n_cascades);
+options.descScale = 0.16 * ones(1,options.n_cascades);
 options.descBins  =  4;
 
             

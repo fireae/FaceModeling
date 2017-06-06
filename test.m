@@ -1,45 +1,15 @@
 %close all;
-%git test
-oldlist = dir(['.\data\BFM\trainfrontal\' '*.jpg']);
-for i = 1:length(oldlist)
-    im = imread(['.\data\BFM\traincrop\im' num2str(i) '.jpg']);
-    imwrite(im,['.\data\BFM\tmp\' oldlist(i).name])
-    
-    load (['.\data\BFM\traincrop\cam' num2str(i) '.mat'])
-    camera.cx = camera.cx - 320;
-    camera.cy = camera.cy - 240;
-    save(['.\data\BFM\tmp\cam' oldlist(i).name(3:end - 4) '.mat'],'camera');
+
+options = setup( );
+%[BFMmodel,~] = load_model(); %load BFM 3d face model
+%% learn cascaded regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% loading data
+for id = 84:104
+disp(['id:' num2str(id)]);
+path = ['../BosphorusDB/bs' sprintf('%03d',id) '/'];
+Data = load_real_data(path,options);
 end
-
-
-% options = setup( );
-% %[BFMmodel,~] = load_model(); %load BFM 3d face model
-% %% learn cascaded regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% imgDir = './data/real/';
-% ptsDir = './data/real/';
-% 
-% %% loading data
-% disp('Loading training data...');
-% Data = load_real_data(imgDir, ptsDir, options);
-% for i = 1:length(Data)
-% %     [bbox,~] = facedetect(Data{i}.img);
-% %     cropim = imcrop(Data{i}.img,bbox);
-% %     imwrite(cropim, ['data\real\crop\' num2str(i) 'im.jpg']);
-% load (['data\real\crop\' num2str(i) 'cam.mat']);
-% 
-%     camera.cx = size(Data{i}.img,2)/2.0 - (Data{i}.centery - camera.cx);  %cx: center along horizontal direction
-%     camera.cy = size(Data{i}.img,1)/2.0 - (Data{i}.centerx - camera.cy);  %cy: center along vertical direction
-%     %trans = Data{i}.trans_gt;
-%     %para = Data{i}.para_gt;
-%     save (['data\real\crop\' num2str(i) 'cam.mat'],'camera');
-% %     save (['data\real\crop\' num2str(i) 'Trans.mat'],'trans');
-% %     save (['data\real\crop\' num2str(i) 'Para.mat'],'para');
-%     
-%     
-%     clear camera;
-%     clear trans;
-%     clear para;
-% end
 % load  innerKeypointIndices.mat
 % 
 % image = imread('bs000_LFAU_12LW_0.png');

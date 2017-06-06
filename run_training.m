@@ -4,26 +4,36 @@ tic;
 %% loading the setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 options = setup( );
 
-[BFMmodel,~] = load_model(); %load BFM 3d face model
-load  innerKeypointIndices.mat %load indices of inner key points on 3d face model
-boundIdxSet =[];
+%[BFMmodel,~] = load_model(); %load BFM 3d face model
+exist faces;
+if ans == 0
+    load('model/FWM5.mat');
+end
+%load  innerKeypointIndices.mat %load indices of inner key points on 3d face model
+%boundIdxSet =[];
 
 
 %% learn cascaded regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 imgDir = options.trainingImageDataPath;
-ptsDir = options.trainingTruthDataPath;
+%ptsDir = options.trainingTruthDataPath;
 
 %% loading data
 disp('Loading training data...');
-trainData = load_all_data2(imgDir, ptsDir, options );
+trainData = load_all_bd_data([imgDir 'bs000/'], options);
+for id = 1:99
+    path = [imgDir 'bs' sprintf('%03d',id) '/'];
+    tmp = load_all_bd_data(path, options);
+    trainData = [trainData;tmp];
+end
+clear tmp;
 n_cascades = options.n_cascades;
 LearnedCascadedModel{n_cascades}.R = [];
 rms = zeros(n_cascades,1);
 
 bv = [];
 if options.useBoundary ==1
-    boundIdxSet = load_bIndex();
-    bv = zeros(length(trainData)*options.n_init_randoms, size(boundIdxSet,2));
+    %boundIdxSet = Landmarks.boundary;
+    bv = zeros(length(trainData)*options.n_init_randoms, size(Landmarks.boundary,1));
 end
 
 for icascade = 1 : n_cascades
@@ -35,7 +45,7 @@ for icascade = 1 : n_cascades
         
         new_init_para = [];
         [R, new_init_para, rms(icascade), bv] = learn_single_regressor( ...
-            BFMmodel,  innerKeypointIndices, boundIdxSet, bv, trainData, new_init_para, options );
+            Bilinear, faces, Landmarks, bv, trainData, new_init_para, options );
         LearnedCascadedModel{icascade}.R = R;   
         %% save other parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         LearnedCascadedModel{icascade}.n_cascades = n_cascades;
@@ -45,16 +55,16 @@ for icascade = 1 : n_cascades
     else
         
         [R,new_init_para,rms(icascade), bv] = learn_single_regressor( ...
-            BFMmodel,  innerKeypointIndices, boundIdxSet, bv, trainData, new_init_para, options );     
+            Bilinear, faces, Landmarks, bv, trainData, new_init_para, options );     
         LearnedCascadedModel{icascade}.R = R;
         
     end   
-    save('../Result/Trained_RMS.mat' , 'rms');
+    save('Result/Trained_RMS.mat' , 'rms');
 end
 
 %save('Result/Trained_RMS.mat' , 'rms');
 
 save([options.modelPath options.slash ...
-    'LearnedCascadedModel.mat'],'LearnedCascadedModel');
+    'LearnedCascadedModel.mat'],'LearnedCascadedModel','options');
 toc;
 clear;
