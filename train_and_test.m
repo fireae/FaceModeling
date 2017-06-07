@@ -6,69 +6,69 @@ tic;
 options = setup();
 parpool('local',40);
 % load FaceWarehouse Model
-if (exist('faces','var')==0) 
-    tmp = load('model/FWM5.mat');
-    faces = tmp.faces;
-    Bilinear = tmp.Bilinear;
-    Landmarks = tmp.Landmarks;
-    Segmentation = tmp.Segmentation;
-    clear tmp;
-end
+% if (exist('faces','var')==0) 
+%     tmp = load('model/FWM5.mat');
+%     faces = tmp.faces;
+%     Bilinear = tmp.Bilinear;
+%     Landmarks = tmp.Landmarks;
+%     Segmentation = tmp.Segmentation;
+%     clear tmp;
+% end
 
-%% learn cascaded regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-imgDir = options.trainingImageDataPath;
-%ptsDir = options.trainingTruthDataPath;
+% %% learn cascaded regression %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% imgDir = options.trainingImageDataPath;
+% %ptsDir = options.trainingTruthDataPath;
 
-%% loading data 
-disp('Loading training data...');
-trainData = load_bd_data([imgDir 'bs000/'], options);
-parfor id = 1:29
-    path = [imgDir 'bs' sprintf('%03d',id) '/'];
-    tmp = load_bd_data(path, options);
-    trainData = [trainData;tmp];
-end
-parfor id = 35:104
-    path = [imgDir 'bs' sprintf('%03d',id) '/'];
-    tmp = load_bd_data(path, options);
-    trainData = [trainData;tmp];
-end
-clear tmp;
-n_cascades = options.n_cascades;
-LearnedCascadedModel{n_cascades}.Regression = [];
-rms = zeros(n_cascades,1);
+% %% loading data 
+% disp('Loading training data...');
+% trainData = load_bd_data([imgDir 'bs000/'], options);
+% parfor id = 1:29
+%     path = [imgDir 'bs' sprintf('%03d',id) '/'];
+%     tmp = load_bd_data(path, options);
+%     trainData = [trainData;tmp];
+% end
+% parfor id = 35:104
+%     path = [imgDir 'bs' sprintf('%03d',id) '/'];
+%     tmp = load_bd_data(path, options);
+%     trainData = [trainData;tmp];
+% end
+% clear tmp;
+% n_cascades = options.n_cascades;
+% LearnedCascadedModel{n_cascades}.Regression = [];
+% rms = zeros(n_cascades,1);
 
 
-for icascade = 1 : n_cascades
+% for icascade = 1 : n_cascades
     
-    options.current_cascade = icascade;
+%     options.current_cascade = icascade;
     
-    %% learning single regressors
-    if icascade == 1
+%     %% learning single regressors
+%     if icascade == 1
         
-        newInitPara = [];
-        newInitTran = [];
-        [Regression, newInitPara, newInitTran, rms(icascade)] = learn_single_regressor( ...
-            Bilinear, faces, Landmarks, trainData, newInitPara, newInitTran, options );
-        LearnedCascadedModel{icascade}.Regression = Regression;   
-        %% save other parameters 
-        LearnedCascadedModel{icascade}.n_cascades = n_cascades;
-        LearnedCascadedModel{icascade}.descSize   = options.descSize;
-        LearnedCascadedModel{icascade}.descBins   = options.descBins;
+%         newInitPara = [];
+%         newInitTran = [];
+%         [Regression, newInitPara, newInitTran, rms(icascade)] = learn_single_regressor( ...
+%             Bilinear, faces, Landmarks, trainData, newInitPara, newInitTran, options );
+%         LearnedCascadedModel{icascade}.Regression = Regression;   
+%         %% save other parameters 
+%         LearnedCascadedModel{icascade}.n_cascades = n_cascades;
+%         LearnedCascadedModel{icascade}.descSize   = options.descSize;
+%         LearnedCascadedModel{icascade}.descBins   = options.descBins;
              
-    else
+%     else
         
-        [Regression,newInitPara,newInitTran, rms(icascade)] = learn_single_regressor( ...
-            Bilinear, faces, Landmarks, trainData, newInitPara, newInitTran, options );     
-        LearnedCascadedModel{icascade}.Regression = Regression;
+%         [Regression,newInitPara,newInitTran, rms(icascade)] = learn_single_regressor( ...
+%             Bilinear, faces, Landmarks, trainData, newInitPara, newInitTran, options );     
+%         LearnedCascadedModel{icascade}.Regression = Regression;
         
-    end   
+%     end   
     
-end
+% end
 
-save([options.ResultPath 'TrainLoss.mat'] , 'rms');
+% save([options.ResultPath 'TrainLoss.mat'] , 'rms');
 
-save([options.ResultPath 'LearnedCascadedModel.mat'],'LearnedCascadedModel');
-toc;
+% save([options.ResultPath 'LearnedCascadedModel.mat'],'LearnedCascadedModel');
+% toc;
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%validate training data
 % load([options.ResultPath 'LearnedCascadedModel.mat']);

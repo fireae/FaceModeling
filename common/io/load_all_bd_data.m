@@ -57,9 +57,9 @@ for ifaces = 1:nfaces
             imgCrop = img(region(2):bottom_y, region(1):right_x, :);
             %% normalize image
             tmp = reshape(double(imgCrop),1,[]);
-            Imax = max(tmp);
-            Imin = min(tmp);
-            imgCrop = reshape(uint8(255*(tmp - Imin)/(Imax - Imin)),size(imgCrop));
+            %Imax = max(tmp);
+            %Imin = min(tmp);
+            %imgCrop = reshape(uint8(255*(tmp - Imin)/(Imax - Imin)),size(imgCrop));
             %% recalculate the location of groundtruth shape and bounding box
             Data{ifaces}.lm2d = bsxfun(@minus, Data{ifaces}.lm2d,...
                 double([region(1) region(2)]));

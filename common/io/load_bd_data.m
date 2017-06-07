@@ -6,6 +6,7 @@ nfaces  = length(facelist);
 %nimgs  = 10;
 
 Data = cell(nfaces, 1);
+Label = cell(nfaces,1);
 validFace = zeros(1,nfaces);
 for ifaces = 1 : nfaces
     
@@ -25,6 +26,8 @@ for ifaces = 1 : nfaces
         else 
         Data{ifaces}.flag = 1;
         validFace(ifaces) =1;
+
+    Label{ifaces}.name = name;
     %%load 2D landmarks
     fid = fopen([path name ext],'rb');
     landmarks = fread(fid,inf,'float');
@@ -51,10 +54,10 @@ for ifaces = 1 : nfaces
     
     imgCrop = img(region(2):bottom_y, region(1):right_x, :);
     %% normalize image
-            tmp = reshape(double(imgCrop),1,[]);
-            Imax = max(tmp);
-            Imin = min(tmp);
-            imgCrop = reshape(uint8(255*(tmp - Imin)/(Imax - Imin)),size(imgCrop));    
+            %tmp = reshape(double(imgCrop),1,[]);
+            %Imax = max(tmp);
+            %Imin = min(tmp);
+            %imgCrop = reshape(uint8(255*(tmp - Imin)/(Imax - Imin)),size(imgCrop));    
     %% recalculate the location of groundtruth shape and bounding box
     Data{ifaces}.lm2d = bsxfun(@minus, Data{ifaces}.lm2d,...
         double([region(1) region(2)]));
@@ -89,7 +92,8 @@ for ifaces = 1 : nfaces
         
 end
 Data = Data(logical(validFace));
-
+Label = Lable(logical(validFace));
+save([options.ResultPath 'Lable.mat','Label');
 end
 
 function region = enlargingbbox(bbox, scale)
