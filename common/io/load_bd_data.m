@@ -93,7 +93,7 @@ for ifaces = 1 : nfaces
 end
 Data = Data(logical(validFace));
 Label = Lable(logical(validFace));
-save([options.ResultPath 'Lable.mat','Label');
+%save([options.ResultPath 'Lable.mat','Label');
 end
 
 function region = enlargingbbox(bbox, scale)

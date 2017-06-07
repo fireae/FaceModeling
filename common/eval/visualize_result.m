@@ -61,7 +61,7 @@ function [projdist, rmseParaCenter, rmseParaWhole,rmseCenter,rmseWhole,euDist]..
     error = abs(estShape(3,:)-gtShape(3,:));
     rmseParaCenter = sqrt(sum(error(idxCenter).^2)/length(error(idxCenter)));
     rmseParaWhole = sqrt(sum(error(idxValid).^2)/length(error(idxValid)));
-    disp(['rmse with gt parameters: Face:' num2str(rmseParaCenter) 'Head:' num2str(rmseParaWhole)]);
+    %disp(['rmse with gt parameters: Face:' num2str(rmseParaCenter) 'Head:' num2str(rmseParaWhole)]);
     %% show 3D error map
     %% RMSE with rigistered mesh
     mesh = Data.mesh;
@@ -69,7 +69,7 @@ function [projdist, rmseParaCenter, rmseParaWhole,rmseCenter,rmseWhole,euDist]..
     error = abs(estShape(3,:)-mesh(3,:));
     rmseCenter = sqrt(sum(error(idxCenter).^2)/length(error(idxCenter)));
     rmseWhole = sqrt(sum(error(idxValid).^2)/length(error(idxValid)));
-    disp(['rmse with gt mesh: Face:' num2str(rmseCenter) 'Head:' num2str(rmseWhole)]);
+    %disp(['rmse with gt mesh: Face:' num2str(rmseCenter) 'Head:' num2str(rmseWhole)]);
  
     %% Euclidian distance with ground truth mesh
 %     euDist = mean(euclidian_dist(estShape(:,idxCenter),mesh(:,idxCenter)));

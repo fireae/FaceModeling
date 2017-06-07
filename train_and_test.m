@@ -1,5 +1,6 @@
 function train_and_test ( )
 %%%%%%%%%%%%%%%%%%%%%%%%% train
+warning('off','all');
 close all;
 tic;
 %% loading the setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -134,8 +135,8 @@ load([options.ResultPath 'LearnedCascadedModel.mat']);
 LearnedCascadedModel = LearnedCascadedModel;
 %% load testing data
 imgDir = options.testingImageDataPath;
-Data = load_all_bd_data([imgDir 'bs030/'],options);
-parfor id = 30:34
+Data = load_all_bd_data([imgDir 'bs000/'],options);
+parfor id = 1:4
     path = [imgDir 'bs' sprintf('%03d',id) '/'];
     tmp = load_all_bd_data(path, options);
     Data = [Data;tmp];

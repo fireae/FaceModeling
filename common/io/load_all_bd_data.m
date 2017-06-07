@@ -5,7 +5,9 @@ facelist = dir([path '*data']);
 nfaces  = length(facelist);
 %nimgs  = 10;
 
+
 Data = cell(nfaces, 1);
+Label = cell(nfaces,1);
 validFace = zeros(1,nfaces);
 for ifaces = 1:nfaces
     
@@ -22,7 +24,8 @@ for ifaces = 1:nfaces
              validFace(ifaces) = 0;
         else 
             validFace(ifaces) =1;
-            %% load ground truth point cloud
+Label{ifaces}.name = name;            
+%% load ground truth point cloud
             [data, zmin, nrows, ncols, ~] = read_bntfile([path name '.bnt']);
             [x_vec,y_vec,z_vec] = gen_depth(data, zmin, nrows, ncols);
             Data{ifaces}.pCloud = [x_vec y_vec z_vec]';
@@ -56,7 +59,7 @@ for ifaces = 1:nfaces
 
             imgCrop = img(region(2):bottom_y, region(1):right_x, :);
             %% normalize image
-            tmp = reshape(double(imgCrop),1,[]);
+            %tmp = reshape(double(imgCrop),1,[]);
             %Imax = max(tmp);
             %Imin = min(tmp);
             %imgCrop = reshape(uint8(255*(tmp - Imin)/(Imax - Imin)),size(imgCrop));
@@ -98,6 +101,8 @@ for ifaces = 1:nfaces
         
 end
 Data = Data(logical(validFace));
+Label = Label(logical(validFace));
+save([options.ResultPath 'Label.mat'],'Label');
 
 end
 
