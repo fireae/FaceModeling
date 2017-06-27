@@ -56,6 +56,8 @@ if ( current_cascade == 1 )
 
             initID = wID;
             initEP = wEP;
+            initID = mean(model.Wids);
+            initEP = mean(model.Weps); 
         %% compute the descriptors and delta_shape %%%%%%%%%%%%%%%%%%%%            
             % storing the initial shape
             storageInitPara(idata,:) = [initID initEP];
@@ -209,8 +211,8 @@ for i = 1:nsamples
     err(i) = rms_err( pr_para, gt_para, options);  
 end
 
-rms = 100*mean(err);
-disp(['ERR average: ' num2str(100*mean(err))]);
+rms = mean(err);
+disp(['ERR average: ' num2str(mean(err))]);
 
 clear storage_init_para;
 clear storage_gt_para;

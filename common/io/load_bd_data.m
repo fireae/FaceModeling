@@ -6,7 +6,7 @@ nfaces  = length(facelist);
 %nimgs  = 10;
 
 Data = cell(nfaces, 1);
-Label = cell(nfaces,1);
+%Label = cell(nfaces,1);
 validFace = zeros(1,nfaces);
 for ifaces = 1 : nfaces
     
@@ -27,7 +27,7 @@ for ifaces = 1 : nfaces
         Data{ifaces}.flag = 1;
         validFace(ifaces) =1;
 
-    Label{ifaces}.name = name;
+   % Label{ifaces}.name = name;
     %%load 2D landmarks
     fid = fopen([path name ext],'rb');
     landmarks = fread(fid,inf,'float');
@@ -92,7 +92,7 @@ for ifaces = 1 : nfaces
         
 end
 Data = Data(logical(validFace));
-Label = Lable(logical(validFace));
+%Label = Lable(logical(validFace));
 %save([options.ResultPath 'Lable.mat','Label');
 end
 

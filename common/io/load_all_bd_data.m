@@ -1,4 +1,4 @@
-function Data = load_all_bd_data( path, options )
+function [Data,Label] = load_all_bd_data( path, options )
 %LOAD_BD_DATA Summary of this function goes here
 %   Detailed explanation goes here
 facelist = dir([path '*data']);
@@ -66,6 +66,7 @@ Label{ifaces}.name = name;
             %% recalculate the location of groundtruth shape and bounding box
             Data{ifaces}.lm2d = bsxfun(@minus, Data{ifaces}.lm2d,...
                 double([region(1) region(2)]));
+            Data{ifaces}.rgb = imgCrop;
             Data{ifaces}.imgCrop = rgb2gray(imgCrop);
             Data{ifaces}.width  = size(img,2);
             Data{ifaces}.height = size(img,1);
@@ -102,7 +103,7 @@ Label{ifaces}.name = name;
 end
 Data = Data(logical(validFace));
 Label = Label(logical(validFace));
-save([options.ResultPath 'Label.mat'],'Label');
+%save([options.ResultPath 'Label.mat'],'Label');
 
 end
 

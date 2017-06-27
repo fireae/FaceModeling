@@ -6,7 +6,7 @@ tic;
 %% loading the setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 options = setup();
 parpool('local',40);
-% load FaceWarehouse Model
+%load FaceWarehouse Model
 % if (exist('faces','var')==0) 
 %     tmp = load('model/FWM5.mat');
 %     faces = tmp.faces;
@@ -22,13 +22,13 @@ parpool('local',40);
 
 % %% loading data 
 % disp('Loading training data...');
-% trainData = load_bd_data([imgDir 'bs000/'], options);
-% parfor id = 1:29
+% trainData = load_bd_data([imgDir 'bs005/'], options);
+% parfor id = 6:29
 %     path = [imgDir 'bs' sprintf('%03d',id) '/'];
 %     tmp = load_bd_data(path, options);
 %     trainData = [trainData;tmp];
 % end
-% parfor id = 35:104
+% parfor id = 30:104
 %     path = [imgDir 'bs' sprintf('%03d',id) '/'];
 %     tmp = load_bd_data(path, options);
 %     trainData = [trainData;tmp];
@@ -135,14 +135,19 @@ load([options.ResultPath 'LearnedCascadedModel.mat']);
 LearnedCascadedModel = LearnedCascadedModel;
 %% load testing data
 imgDir = options.testingImageDataPath;
-Data = load_all_bd_data([imgDir 'bs000/'],options);
-parfor id = 1:4
-    path = [imgDir 'bs' sprintf('%03d',id) '/'];
-    tmp = load_all_bd_data(path, options);
-    Data = [Data;tmp];
-end
-clear tmp;
-% Data = load_data('./data/real/', options);
+[Data,label] = load_all_bd_data([imgDir 'bs102/'],options);
+% for id = 42:45
+%     path = [imgDir 'bs' sprintf('%03d',id) '/'];
+%     [tmp,tmplb] = load_all_bd_data(path, options);
+%     Data = [Data;tmp];
+%     label = [label;tmplb];
+% end
+% clear tmp;
+% clear tmplb;
+%save([options.ResultPath 'label.mat'],'label');
+%disp('done');
+%pause;
+% data = load_data('./data/real/', options);
 nData = length(Data);
 
 %% evaluating on whole data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,7 +159,8 @@ rmse2whole = zeros(nData,1);
 eudist = zeros(nData,1);
 estimation = cell(1,nData);
 CrTensor = tensor(Bilinear.Cr);
-%load([options.ResultPath 'estimation.mat']);
+%load([options.ResultPath 'estimation.mat']); 
+tic;
 parfor idata = 1:nData%nData
 %     idata = randi([1,nData],1);
     disp(['Image: ' num2str(idata)]);
@@ -162,7 +168,7 @@ parfor idata = 1:nData%nData
     % estimate parameters based on the learning regressor
     [estID, estEP, R, T, s] = face_alignment( Bilinear, faces, Landmarks, ...
        LearnedCascadedModel, Data{idata}, idata, options);    
-    estimation{idata}.EP = estEP;
+estimation{idata}.EP = estEP;
     estimation{idata}.ID = estID;
     estimation{idata}.R = R;
     estimation{idata}.T = T;
@@ -199,12 +205,13 @@ parfor idata = 1:nData%nData
 
 %     if Data{idata}.flag ==1
     [error1,error2,error3,error4,error5,error6] = visualize_result(Data{idata},estimation{idata},CrTensor, faces, Landmarks, Segmentation, options);
-     saveas(figure(1),[options.ResultPath 'imgs\' num2str(idata) '_img.jpg']);
-     saveas(figure(2),[options.ResultPath 'imgs\' num2str(idata) '_errormap.jpg']);
-     saveas(figure(3),[options.ResultPath 'imgs\' num2str(idata) '_mesh.jpg']);
-     saveas(figure(4),[options.ResultPath 'imgs\' num2str(idata) '_estshape.jpg']);
-     saveas(figure(5),[options.ResultPath 'imgs\' num2str(idata) '_gtshape.jpg']);
-    pdc(idata) = error1;
+     saveas(figure(1),[options.ResultPath 'imgs\' num2str(idata) '_img.png']);
+     saveas(figure(2),[options.ResultPath 'imgs\' num2str(idata) '_errormap.png']);
+     saveas(figure(3),[options.ResultPath 'imgs\' num2str(idata) '_mesh.png']);
+     saveas(figure(4),[options.ResultPath 'imgs\' num2str(idata) '_estshape.png']);
+     saveas(figure(5),[options.ResultPath 'imgs\' num2str(idata) '_gtshape.png']);
+saveas(figure(6),[options.ResultPath 'imgs\' num2str(idata) '_rgb.png']);  
+  pdc(idata) = error1;
     rmse1center(idata) = error2;
     rmse1whole(idata) = error3;
     rmse2center(idata) = error4;
@@ -214,6 +221,7 @@ parfor idata = 1:nData%nData
 %     pause;
     
 end
+toc;
 save([options.ResultPath 'estimation.mat'],'estimation');
 
     disp(['pdc average: ' num2str(mean(pdc(pdc>0)))]);

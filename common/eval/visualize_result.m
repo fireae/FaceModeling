@@ -37,17 +37,24 @@ function [projdist, rmseParaCenter, rmseParaWhole,rmseCenter,rmseWhole,euDist]..
     %% Normalized Project distance
     projdist = norm_Edist(gtProj, estProj, options);
     %% show image with projection
+    tmp = imlincomb(1.5,Data.rgb);
     figure(1);
-    imshow(img);
-    hold on;plot(estProj(1, :),estProj(2,:),'r*');
-    hold on; %plot(gtProj(1,:),gtProj(2,:),'g*');
-    hold on;plot(Data.lm2d(:,1),Data.lm2d(:,2),'b*');
+    
+    imshow(tmp,'border','tight');
+    hold on;plot(estProj(1, :),estProj(2,:),'g.','MarkerSize',30);
+    set(gca,'xdir','reverse');
+    %hold on; %plot(gtProj(1,:),gtProj(2,:),'g*');
+    %hold on;plot(Data.lm2d(:,1),Data.lm2d(:,2),'b*');
     %show shape mask
 %     tmp = cal_key_projection(estShape, cx, cy, fx, fy, Rc, Tc);
 %     plot(tmp(:,1),tmp(:,2),'b.',);
-    title(['Key points projection - projdist =' num2str(projdist) ]);
-    legend('estimate','ground truth');
+    %title(['Key points projection - projdist =' num2str(projdist) ]);
+    %legend('estimate','ground truth');
     hold off;
+    figure(6);
+    imshow(tmp,'border','tight');
+    set(gca,'xdir','reverse');
+
     %% RMSE with ground truth point cloud
 %     vec = Data.pCloud;
 %     [Ricp Ticp ER t] = icp(estShape(:,Segmentation.segCenter),vec, 15);
@@ -100,10 +107,11 @@ function [projdist, rmseParaCenter, rmseParaWhole,rmseCenter,rmseWhole,euDist]..
     tex = colors_3N_1;
     %tex = 200 * repmat([1;1;1],[1,size(estShape,2)]);
     display_face(shape, tex, faces, rp);  
-    c = colorbar;
-    c.Position = [0.9 0.02 0.04 0.96];
-    c.FontSize = 12;
-    c.TickLabels = maxerror*0:10;
+    %c = colorbar('southoutside');
+    %c.Position = [0.9 0.02 0.04 0.96];
+    %c.Position = [0.25 0.04 0.5 0.04];
+    %c.FontSize = 10;
+    %c.TickLabels = {0,2,4,6,8,10};%maxerror*0:10;
     title(['3D face:estimated -vdist =' num2str(rmseParaCenter)]);
     
     %% show 3D gt shape
